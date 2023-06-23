@@ -4,6 +4,7 @@ cc -o mycc mycc.c
 cc -o tmp tmp.s
 
 chmod a+x test.sh
+<!-- シェルスクリプトの改行コードをLFにしないと検出されないので注意！！ -->
 ./tmp
 <!-- 直前のコマンドの終了コードを表示 -->
 echo $?
