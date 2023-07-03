@@ -1,4 +1,6 @@
 CFLAGS=-std=c11 -g -static
+LDFLAGS=
+
 SRCS=$(wildcard *.c)
 OBJS=$(SRCS:.c=.o)
 
