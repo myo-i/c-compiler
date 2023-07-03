@@ -25,6 +25,22 @@ struct Token {
   int len;        // Token length
 };
 
+void error(char *fmt, ...);
+void error_at(char *loc, char *fmt, ...);
+bool consume(char *op);
+Token *consume_ident();
+void expect(char *op);
+int expect_number();
+char *expect_ident();
+bool at_eof();
+Token *new_token(TokenKind kind, Token *cur, char *str, int len);
+Token *tokenize();
+
+extern char *filename;
+extern char *user_input;
+extern Token *token;
+
+
 // Input program
 char *user_input;
 
