@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <ctype.h>
 #include <stdarg.h>
 #include <stdbool.h>
@@ -6,13 +7,13 @@
 #include <string.h>
 
 //
-// Tokenizer
+// tokenize.c
 //
 
 typedef enum {
-  TK_RESERVED, // Keywords or punctuators
-  TK_NUM,      // Integer literals
-  TK_EOF,      // End-of-file markers
+  TK_PUNCT, // Keywords or punctuators
+  TK_NUM,   // Numeric literals
+  TK_EOF,   // End-of-file markers
 } TokenKind;
 
 // Token type
@@ -21,34 +22,19 @@ struct Token {
   TokenKind kind; // Token kind
   Token *next;    // Next token
   int val;        // If kind is TK_NUM, its value
-  char *str;      // Token string
+  char *loc;      // Token location
   int len;        // Token length
 };
 
 void error(char *fmt, ...);
 void error_at(char *loc, char *fmt, ...);
-bool consume(char *op);
-Token *consume_ident();
-void expect(char *op);
-int expect_number();
-char *expect_ident();
-bool at_eof();
-Token *new_token(TokenKind kind, Token *cur, char *str, int len);
-Token *tokenize();
-
-extern char *filename;
-extern char *user_input;
-extern Token *token;
-
-
-// Input program
-char *user_input;
-
-// Current token
-Token *token;
+void error_tok(Token *tok, char *fmt, ...);
+bool equal(Token *tok, char *op);
+Token *skip(Token *tok, char *op);
+Token *tokenize(char *input);
 
 //
-// Parser
+// parse.c
 //
 
 typedef enum {
@@ -56,6 +42,7 @@ typedef enum {
   ND_SUB, // -
   ND_MUL, // *
   ND_DIV, // /
+  ND_NEG, // unary -
   ND_EQ,  // ==
   ND_NE,  // !=
   ND_LT,  // <
@@ -72,3 +59,10 @@ struct Node {
   int val;       // Used if kind == ND_NUM
 };
 
+Node *parse(Token *tok);
+
+//
+// codegen.c
+//
+
+void codegen(Node *node);
