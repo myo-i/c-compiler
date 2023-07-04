@@ -3,9 +3,8 @@ assert() {
   expected="$1"
   input="$2"
 
-  cc -o main main.c
-  ./main "$input" > tmp.s
-  cc -o tmp tmp.s
+  ./mycc "$input" > tmp.s || exit
+  gcc -static -o tmp tmp.s
   ./tmp
   actual="$?"
 
@@ -46,6 +45,5 @@ assert 0 '1>2'
 assert 1 '1>=0'
 assert 1 '1>=1'
 assert 0 '1>=2'
-
 
 echo OK
